@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import jdc.loja.domain.Categoria;
+import jdc.loja.domain.Cidade;
+import jdc.loja.domain.Estado;
 import jdc.loja.domain.Produto;
 import jdc.loja.repositories.CategoriaRepository;
+import jdc.loja.repositories.CidadeRepository;
+import jdc.loja.repositories.EstadoRepository;
 import jdc.loja.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class LojaApplication implements CommandLineRunner {
 	
 	@Autowired
 	private ProdutoRepository prodRep;
+	
+	@Autowired
+	private EstadoRepository estRep;
+	
+	@Autowired
+	private CidadeRepository cidRep;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LojaApplication.class, args);
@@ -44,5 +54,18 @@ public class LojaApplication implements CommandLineRunner {
 		
 		catRep.saveAll(Arrays.asList(cat1, cat2));
 		prodRep.saveAll(Arrays.asList(p1, p2, p3));
+		
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "São Paulo");
+		
+		Cidade c1 = new Cidade(null, "Uberlândia", est1);
+		Cidade c2 = new Cidade(null, "São Paulo", est2);
+		Cidade c3 = new Cidade(null, "Campinas", est2);
+		
+		est1.getCidades().addAll(Arrays.asList(c1));
+		est2.getCidades().addAll(Arrays.asList(c2, c3));
+		
+		estRep.saveAll(Arrays.asList(est1, est2));
+		cidRep.saveAll(Arrays.asList(c1, c2, c3));
 	}
 }
