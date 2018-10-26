@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import jdc.loja.domain.Categoria;
+import jdc.loja.dto.CategoriaDTO;
 import jdc.loja.repositories.CategoriaRepository;
 import jdc.loja.services.exceptions.DataIntegrityException;
 import jdc.loja.services.exceptions.ObjectNotFoundException;
@@ -56,4 +57,7 @@ public class CategoriaService {
 		return rep.findAll(pageReq);
 	}
 
+	public Categoria fromDTO(CategoriaDTO objDto) {
+		return new Categoria(objDto.getId(), objDto.getNome());
+	}
 }
