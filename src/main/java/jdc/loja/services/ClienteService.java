@@ -17,7 +17,6 @@ import jdc.loja.domain.Endereco;
 import jdc.loja.domain.enums.TipoCliente;
 import jdc.loja.dto.ClienteDTO;
 import jdc.loja.dto.ClienteNewDTO;
-import jdc.loja.repositories.CidadeRepository;
 import jdc.loja.repositories.ClienteRepository;
 import jdc.loja.repositories.EnderecoRepository;
 import jdc.loja.services.exceptions.DataIntegrityException;
