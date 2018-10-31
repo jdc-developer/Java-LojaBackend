@@ -114,6 +114,16 @@ public class ClienteService {
 	}
 	
 	public URI uploadProfilePicture(MultipartFile multipartFile) {
-		return s3.uploadFile(multipartFile);
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		URI uri = s3.uploadFile(multipartFile);
+		
+		Cliente cli = rep.findById(user.getId()).get();
+		cli.setImageUrl(uri.toString());
+		rep.save(cli);
+		
+		return uri;
 	}
 }
