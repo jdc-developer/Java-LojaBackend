@@ -15,11 +15,14 @@ import org.springframework.stereotype.Service;
 import jdc.loja.domain.Cidade;
 import jdc.loja.domain.Cliente;
 import jdc.loja.domain.Endereco;
+import jdc.loja.domain.enums.Perfil;
 import jdc.loja.domain.enums.TipoCliente;
 import jdc.loja.dto.ClienteDTO;
 import jdc.loja.dto.ClienteNewDTO;
 import jdc.loja.repositories.ClienteRepository;
 import jdc.loja.repositories.EnderecoRepository;
+import jdc.loja.security.UserSS;
+import jdc.loja.services.exceptions.AuthorizationException;
 import jdc.loja.services.exceptions.DataIntegrityException;
 import jdc.loja.services.exceptions.ObjectNotFoundException;
 
@@ -36,6 +39,12 @@ public class ClienteService {
 	private BCryptPasswordEncoder pe;
 	
 	public Cliente find(Integer id) {
+		
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = rep.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 					"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()
